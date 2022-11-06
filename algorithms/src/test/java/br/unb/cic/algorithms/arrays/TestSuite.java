@@ -1,5 +1,6 @@
 package br.unb.cic.algorithms.arrays;
 
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,6 +16,9 @@ public class TestSuite {
         MaximumSubArray.Response expected = max.response(7, 10, 43);
 
         Assert.assertEquals(expected, res);
-
+        
+        MaximumSubArrayByBruteForce maxBrute = new MaximumSubArrayByBruteForce();
+        MaximumSubArray.Response resBrute =  maxBrute.maxSubArray(array);
+        Assert.assertEquals(expected, resBrute);
     }
 }
