@@ -1,0 +1,385 @@
+\section{Introduction}
+
+\begin{frame}
+
+  \begin{block}{Introduction to Algorithms (Cormen et al.)}
+  \begin{itemize}
+    \item An algorithm is any well-defined computational procedure (sequence of
+    steps) that takes some set of values as input and produces some set of values
+    as output. \pause
+
+  \item An algorithm is a tool for solving a well-defined computational problem. The
+    statement of the problem specifies the input/output relationship. The
+    algorithm describes a specific computational procedure for achieving the
+    input/output relationship.
+  \end{itemize}
+  \end{block}
+
+  
+  \note[item]{The input must satisfy whatever constraints imposed in the problem statement. Example:
+  the binary search algorithm requires as input an ordered sequence.}
+  
+\end{frame}
+
+\begin{frame}
+
+  \begin{block}{The Art of Computer Programming - Volume I - (D. Knuth)}
+    \begin{itemize}
+      \item The modern meaning of algorithm is similar to that of
+      a method, procedure, routine, and the like. \pause An algorithm must
+      additionally include five important features\pause:
+
+      \begin{enumerate}
+       \item Finiteness
+       \item Definiteness
+       \item Input
+       \item Output
+       \item Effectiveness \pause(in terms of both time and space, for instance)  
+      \end{enumerate}
+   \end{itemize}   
+  \end{block}  
+\end{frame}
+
+\begin{frame}{Different domains are fertile of computational problems}
+
+  \begin{itemize}
+   \item Biology (e.g., DNA sequencing)
+   \item Electronic commerce (e.g., ML, cryptography)
+   \item Manufacturing (optimization)
+   \item Compilers (parsers, data-flow analysis, \ldots)
+  \end{itemize}
+  
+\end{frame}
+
+\begin{frame}{Goals of this course}
+  \begin{itemize}
+   \item Data Structures (graphs)
+   \item Techniques for {\color{blue}algorithm design and analysis}
+     \begin{itemize}
+       \item divide-and-conquer
+       \item dynamic programming, greedy algorithms
+       \item chaotic, fixing-point algorithms, \ldots  
+     \end{itemize}
+   \item Hard problems (aka {\color{blue}complexity} theory) 
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Example: Sorting problem}
+
+  \begin{description}
+   \item[Input] A sequence of $n$ numbers $\langle a_1, a_2, \ldots, a_n \rangle$
+   \item[Output] A permutation (reordering) $\langle a'_1, a'_2, \ldots, a'_n \rangle$ of the input
+     sequence, such that $a'_1 \leq a'_2 \leq \ldots \leq a'_n$
+  \end{description}
+
+  \pause
+  
+  \begin{block}{Problem Instance}
+    Given the input sequence $\langle 31, 41, 59, 26, 41, 58\rangle$,
+    a sorting algorithm returns as output the sequence: \pause
+    $\langle 26, 31, 41, 41, 58, 59 \rangle$
+  \end{block}
+
+
+\end{frame}
+
+\begin{frame}
+  Sorting is a fundamental operation in Computer Science. \pause As such,
+  we have a large number of good algorithms at our disposal. \pause
+
+  \begin{block}{Fundamental questions}
+   \begin{itemize}
+   \item what is the best sorting algorithm? (analysis)
+   \item is this algorithm correct? (correctness proof)
+   \end{itemize}  
+  \end{block}
+\end{frame}
+
+
+\begin{frame}{Insertion Sort}
+  
+  \begin{itemize}
+  \item An efficient algorithm for sorting an array {\bf A} with a
+    {\color{blue}small number of elements}. \pause
+
+  \item The algorithm sorts the input numbers in place---i.e., rearranging the
+    numbers within the input array {\bf A} (emphasis on the procedural style). \pause 
+
+  \item For convenience, we will assume that the indexes of an array of size $n$ are numbered
+    from $1 .. n$ in the pseudocode of the algorithms. \pause The implementation assumes
+    the arrays (or lists) start in the index $0$.   
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{Pseudocode for Insertion Sort}
+  \begin{algorithmic}
+    \Procedure{InsertionSort}{A}
+       \For{$j = 2, \dots, A.length$} 
+         \State $key \gets A[j]$
+         \State $i \gets j-1$
+         \While{$i > 0\ and\ A[i] > key$}
+            \State $A[i+1] \gets A[i]$
+            \State $i \gets i - 1$        
+         \EndWhile
+         \State $A[i+1] = key$  
+       \EndFor
+    \EndProcedure
+  \end{algorithmic}  
+  \end{block}
+
+  \pause 
+
+  \begin{block}{Analysis}
+    \begin{itemize}
+      \item expected (worst-case order of growth) running time
+      \item correctness proof (loop invariant) 
+    \end{itemize}
+
+    \note[item]{The running time of an algorithm on a particular input is the number
+      of (machine-independent) primitive operations executed.}
+
+    \note[item]{We should consider three aspects: initialization, maintenance, and
+    termination. This follows the proof-by-induction method.}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}{Merge Sort}
+
+    \begin{itemize}
+      \item a ``divide-and-conquer'' approach for sorting.
+      \item worst-case running time is much less than that of insertion sort\pause:
+        \begin{itemize}
+         \item insertion sort: $\mathcal{O}(n^2)$ 
+         \item merge sort: $\mathcal{O}(n\log{}n)$ 
+        \end{itemize}
+      \item Essence of the divide-and-conquer approach: many algorithm are {\color{blue}recursive} in nature. \pause
+        We can decompose the problems in three steps:
+        \begin{itemize}
+         \item Divide
+         \item Conquer
+         \item Combine  
+        \end{itemize}
+        \pause
+      \item For the Merge Sort algorithm, the {\color{blue}Combine} step is the interest one. \pause Let's discuss
+        two variants of the merge sort. 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{block}{(V1) The merge function returns a new, sorted array}
+\begin{scriptsize}
+    \begin{algorithmic}
+      \Procedure{Merge}{A,B}
+%       \comment{A and B are sorted arrays}
+       \State $Size \gets A.length + B.length$ 
+       \State $i, j, k \gets 1$  
+       \State $C \gets Array[1 .. Size]$ 
+
+%       \comment{Iterate over the elements of A and B, and copy them in sorted order}
+       \While{$i \leq A.length\ and\ j \leq B.length$}
+         \If{$A[i] \leq B[j]$}
+           \State $C[k] \gets A[i]$
+           \State $i \gets i + 1$
+         \Else
+           \State $C[k] \gets B[j]$
+           \State $j \gets j + 1$
+         \EndIf
+         \State $k \gets k + 1$  
+       \EndWhile
+         
+%% %       \comment{Copy the remaining elements of A}  
+       \For{$l = i, \ldots, A.length$}
+         \State $C[k] \gets A[l]$
+         \State $k \gets k + 1$
+       \EndFor
+
+%% %       \comment{Copy the remaining elements of B} 
+       \For{$l = j, \ldots, B.length$}
+        \State $C[k] \gets B[l]$
+        \State $k \gets k + 1$
+       \EndFor 
+       \State {\bf return} $C$
+    \EndProcedure
+    \end{algorithmic}
+\end{scriptsize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Sorting with Merge Sort}
+
+  \begin{itemize}
+    \item The sort procedure is trivial. 
+  \end{itemize}
+
+  \pause
+
+  \begin{block}{Top-level procedure of merge sort}
+    \begin{scriptsize}
+    \begin{algorithmic}
+      \Procedure{MergeSort}{A}
+        \If{$A.length \leq 1$}
+         \State {\bf return} $A$
+        \EndIf
+
+        \State $Mid \gets A.length / 2$
+        \State $Left  \gets MergeSort(A[1 \ldots Mid])$
+        \State $Right \gets MergeSort(A[Mid \ldots A.length])$
+
+        \State {\bf return} $Merge(Left, Right)$ 
+      \EndProcedure
+    \end{algorithmic}
+    \end{scriptsize}
+  \end{block}   
+\end{frame}
+
+\begin{frame}
+\begin{block}{(V2): More ``procedural'' approach}
+\begin{scriptsize}
+    \begin{algorithmic}
+      \Procedure{Merge}{A, p, q, r}
+       \State $n1 \gets q - p + 1$
+       \State $n2 \gets r - q$  
+       \State $L \gets Array[1 .. n1+1]$
+       \State $R \gets Array[1 .. n2+1]$
+
+       \For{$i = 1, \ldots, n1$}
+         \State{$L[i] \gets A[p+i-1]$}
+       \EndFor
+           
+       \For{$j = 1, \ldots, n2$}
+         \State{$R[j] \gets A[q+j]$}
+       \EndFor
+
+       \State{$L[n1+1] \gets \infty$}
+       \State{$R[n2+1] \gets \infty$}
+       
+       \State{$i \gets 1$}
+       \State{$j \gets 1$}
+
+       \For{$k = p, \ldots, r$}
+
+         \If{$L[i] \leq R[j]$}
+           \State{$A[k] \gets L[i]$}
+           \State{$i \gets i + 1$}
+         \Else
+           \State{$A[k] \gets R[j]$}
+           \State{$j \gets j + 1$}
+         \EndIf
+       \EndFor
+    \EndProcedure
+    \end{algorithmic}
+\end{scriptsize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Divide-and-Conquer}
+  \begin{block}{Remember}
+  \begin{itemize}  
+  \item We decompose the problems in three steps:
+        \begin{itemize}
+        \item Divide
+        \item Conquer
+        \item Combine  
+        \end{itemize}
+      \item We can solve many problems using this approach.
+  \end{itemize}      
+  \end{block}
+\end{frame}
+
+\begin{frame}{The {\bf Maximum Subarray} problem}
+  \begin{itemize}
+    \item Goal: Find the nonempty, contiguous subarray of an
+      array {\bf A}, whose values have the largest sum.
+  \end{itemize} \pause
+  
+  \begin{block}{Example: consider the Array}
+    \vskip+1em
+    \begin{center}   
+      \begin{scriptsize}$A = \langle 13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7 \rangle$\end{scriptsize}
+    \end{center}
+
+    \begin{itemize}
+      \item $maxSubarray(A) = (8, 11, 43)$ 
+    \end{itemize}
+  \end{block}  
+
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item How to solve the Maximum Subarray problem using the {\color{blue}divide-and-conquer} method? \pause
+  \end{itemize}
+
+
+  \begin{block}{General idea}
+    \begin{small}  
+    \begin{algorithmic}
+    \Procedure{MaxSubArray}{A}
+       \If{$A.length = 1$}
+         \State {\bf return} $(1, 1, A[1])$ \Comment{base case} 
+       \EndIf
+
+       \State
+       
+       \State $Mid \gets \lfloor A.length / 2 \rfloor$
+
+       \State 
+       \State $Left \gets MaxSubArray(A[1 \ldots Mid])$
+       \State $Right \gets MaxSubArray(A[(Mid + 1) \ldots A.length])$
+       \State $Crossing \gets MaxCrossing(A)$
+
+       \State 
+       \State {\bf return} $Max(Left, Right, Crossing)$
+      \EndProcedure 
+    \end{algorithmic}
+  \end{small}  
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \begin{block}{Pseudocode for the \texttt{MaxCrossing} function}
+  \begin{tiny}
+  \begin{algorithmic}
+    \Procedure{MaxCrossing}{A}
+       \State $Mid \gets \lfloor A.length / 2 \rfloor$
+       \State
+
+       \State $Sum \gets 0$
+       \State $LeftSum \gets -\infty$
+       \State $LeftIdx \gets Mid$
+
+       \State
+       \For{$I \gets Mid \ldots 1$}
+         \State $Sum \gets Sum + A[I]$
+         \If{$Sum > LeftSum$}
+           \State $LeftSum \gets Sum$
+           \State $LeftIdx \gets I$
+         \EndIf
+       \EndFor
+
+       \State
+       \State $Sum \gets 0$
+       \State $RightSum \gets -\infty$
+       \State $RightIdx \gets (Mid + 1)$
+
+       \State
+       
+       \For{$J \gets (Mid + 1) \ldots A.length$}
+         \State $Sum \gets Sum + A[J]$
+         \If{$Sum > RightSum$}
+           \State $RightSum \gets Sum$
+           \State $RightIdx \gets J$
+         \EndIf
+       \EndFor
+
+       \State
+       \State {\bf return} $(LeftIdx, RightIdx, LeftSum + RightSum)$
+    \EndProcedure
+  \end{algorithmic}
+  \end{tiny}
+  \end{block}
+\end{frame}
