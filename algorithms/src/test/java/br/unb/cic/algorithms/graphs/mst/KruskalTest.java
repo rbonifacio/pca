@@ -34,8 +34,8 @@ public class KruskalTest {
 
         graph.addEdge(a, b, 4);
         graph.addEdge(a, h, 8);
-        graph.addEdge(b, c, 11);
-        graph.addEdge(b, h, 8);
+        graph.addEdge(b, c, 8);
+        graph.addEdge(b, h, 11);
         graph.addEdge(c, d, 7);
         graph.addEdge(c, f, 4);
         graph.addEdge(c, i, 2);

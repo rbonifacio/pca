@@ -40,7 +40,7 @@ of the graph.
 \end{frame}
 
 \begin{frame}
-\frametitle{Grapha representations}
+\frametitle{Graph representations}
 
 
 \begin{itemize}
@@ -73,10 +73,99 @@ of the graph.
 
   \begin{itemize}
    \item Search: Breadth-first search and Depth-first Search
-   \item Single source shortest paths: Belkman-Ford and Dijkstra algorithms
-   \item {\color{blue}Minimum Spanning Trees}
+   \item Single-source shortest paths: Bellman-Ford and Dijkstra algorithms
    \item {\color{blue}All-pairs shortest paths}  
+   \item {\color{blue}Minimum Spanning Trees}
   \end{itemize}
+\end{frame}
+
+
+\begin{frame}{All-pairs shortest paths}
+
+  We are given a weighted, directed graph $G(V, E)$ with a
+  weight function $w : E \rightarrow \mathbb{R}$, and our goal
+  is to find, for {\color{blue}every} pair of vertices $u, v \in V$,
+  the shortest path from $u$ to $v$.
+
+  \pause
+
+  \begin{block}{Note}
+  \begin{itemize}
+    \item Computing the single-source shortest paths to all
+      vertices $v \in V$ is not efficient. \pause Here we will present a
+      dynamic programming algorithm (Floyd-Warshal) that runs in $\Theta(V^3)$ 
+  \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}{Floyd-Warshal algorithm}
+
+  \begin{block}{Features}
+    \begin{itemize}
+     \item Represents the graph using an adjacency-matrix \pause (each cell $(u, v)$ in
+       the matrx contains the weight of the edge $u \rightarrow v$). \pause
+
+     \item Considers the intermediate vertices of a shortest path. If $p = \rangle v_1, v_2, \ldots, v_l \langle$,
+       any vertex other than $v_1$ and $v_l$ are intermediate vertices. \pause
+
+     \item Iterative: Under the assumption that $V = \{1, 2, \ldots, n\}$, considers the subsets $\{1, 2, \ldots, k\}$
+       of vertices for some $k$. 
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \centering{
+    \includegraphics[scale=0.5]{images/fw}
+   }
+\end{frame}
+
+\begin{frame}{Recursive Solution}
+
+\[
+d^{(k)}_{ij}= \left\{
+\begin{array}{ll}
+      w_{ij}                    & if\ k = 0\\ 
+      min(d^{(k-1)}_{ij}, d^{(k-1)}_{ik}+d^{(k-1)}_{kj})  & if\ k \geq 1 \\   
+\end{array} 
+\right. 
+\]
+
+\pause
+
+\begin{itemize}
+  \item The matrix $D^{(n)}$ gives the final answer (considering $V = \{1, 2, \ldots, n\}$).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example}
+    \includegraphics[scale=0.5]{images/graph-fw}
+\end{frame}
+
+\begin{frame}
+  \centering{
+    \includegraphics[scale=0.3]{images/fw-res}}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{Floyd-Warshall algorithm}
+      \begin{algorithmic}
+    \Procedure{Floyd-Warshall}{W}
+     \State $n = W.rows$
+     \State $D^{(0)} = W$
+     \For{$k = 1 \ldots n$}
+      \State $D^{(k)} = (d^{(k)}_{ij}) \text{ be a new n x n matrix}$
+      \For{$i = 1 \ldots n$}
+        \For{$j = 1 \ldots n$}
+          \State $d^{(k)}_{ij} = min(d^{(k-1)}_{ij}, d^{(k-1)}_{ik}+d^{(k-1)}_{kj})$
+        \EndFor
+      \EndFor
+     \EndFor
+    \State {\bf return} $D^{(n)}$
+    \EndProcedure 
+  \end{algorithmic}
+  \end{block}  
 \end{frame}
 
 \begin{frame}{Minimum Spanning Trees}
@@ -142,7 +231,7 @@ of the graph.
     Given:
     \begin{itemize}
       \item $G = (V, E)$ is a connected, undirected graph
-      \item $w : E \rightarrow R$ is a weighted function.
+      \item $w : E \rightarrow \mathbb{R}$ is a weighted function.
       \item $A$ is a subset of $E$ (included in some minimum spanning subtree for $G$)
       \item $(S, V-S)$ is any cut of $G$ that respects $A$
       \item $(u, v)$ is a light edge crossing $(S, V-S)$
