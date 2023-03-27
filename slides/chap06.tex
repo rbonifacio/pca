@@ -1,0 +1,51 @@
+\section{Complexity Theory}
+
+\begin{frame}
+  Most of the algorithms we explored in this course
+  have been \emph{polynomial-time algorithms} (aka easy problems)\pause---that is,
+  their worst-case running time is $\mathcal{O}(n^k)$.
+
+    \begin{itemize}
+     \item There are (hard) problems that can be solved, but not in time $\mathcal{O}(n^k)$ (for any constant $k$). 
+     \item There are problems that cannot be solved by any computer (e.g., {\color{blue}The Halting Problem}), no metter
+       how much computing time is available. 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{P class of problems}
+  \begin{itemize}
+    \item The class P comprehends problems that we can solve in
+    polynomial time ($\mathcal{O}(n^k)$).
+  \end{itemize}    
+\end{frame}
+
+
+\begin{frame}{NP class of problems}
+  \begin{itemize}
+  \item The class NP comprehends problems that are verifiable
+    in polynomial time. \pause That is, we are able to {\color{blue}check
+    in polynomial time} the correctness of an answer for a
+    specific instance of the problem.
+  \item Example: we can check in polynomial time if an assignment to boolean variables
+    satisfies a 3-CNF formula. However, we cannot answer if a 3-CNF formula is
+    satisfiable in polynomial time. 
+  \end{itemize}
+\end{frame}  
+
+\begin{frame}
+  \begin{huge}
+    Any problem in P is also in NP ($P \subseteq NP$).
+  \end{huge} \pause
+
+  \vskip+1.5em
+
+  
+  \begin{itemize}
+   \item Open question: $P \subsetneq NP$
+   \item NPC (NP-complete) is the set of problems that are in NP and
+     are as ``hard'' as any problem in NP. \pause If an NPC problem could
+     be solved in polynomial time, then all problems in NP has a polynomial
+     time algorithm. \pause Most theoretical computer scientists believe that NPC
+     problems are intractable.
+  \end{itemize}
+\end{frame}

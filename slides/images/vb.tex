@@ -1,0 +1,72 @@
+\digraph[scale=0.35]{VbJimple} {
+node [fontname = "Handlee"];
+edge [fontname = "Handlee"];
+
+start [
+ label = "start";
+ shape = ellipse; 
+];
+
+n1 [
+ label = "if a == b goto label1";
+ shape = diamond;
+ xlabel="1";
+];
+
+n2 [
+ label = "x = b - a";
+ shape = rect;
+ xlabel="2";
+];
+
+n3 [
+ label = "y = a - b";
+ shape = rect;
+ xlabel="3";
+];
+
+n4 [
+ label = "y = b - a";
+ shape = rect;
+ xlabel="4";
+];
+
+n5 [
+ label = "a = 0";
+ shape = rect;
+ xlabel="5";
+];
+
+n6 [
+ label = "x = a - b";
+ shape = rect;
+ xlabel="6";
+];
+
+n7 [
+ label = "goto label2";
+ shape = rect;
+ xlabel="7";
+];
+
+n8 [
+ label = "return";
+ shape = rect;
+ xlabel="8";
+];
+
+end [
+ label = "End";
+ shape = ellipse; 
+];
+
+start -> n1;
+n1 -> n2[label = "true"];
+n1 -> n4[label = "false"];
+n2 -> n3 -> n7;
+n4 -> n5 -> n6;
+n6 -> n8;
+n7 -> n8;
+n8 -> end;
+
+}

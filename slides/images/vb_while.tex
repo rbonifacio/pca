@@ -1,0 +1,70 @@
+\digraph[scale=0.35]{VbWhile} {
+node [fontname = "Handlee"];
+edge [fontname = "Handlee"];
+
+start [
+ label = "start";
+ shape = ellipse; 
+];
+
+n1 [
+ label = "if(a != b)";
+ shape = diamond;
+ xlabel="1";
+];
+
+n2 [
+ label = "x := b - a";
+ shape = rect;
+ xlabel="2";
+];
+
+n3 [
+ label = "y := a - b";
+ shape = rect;
+ xlabel="3";
+];
+
+n4 [
+ label = "y := b - a";
+ shape = rect;
+ xlabel="4";
+];
+
+n5 [
+ label = "a := 0";
+ shape = rect;
+ xlabel="5";
+];
+
+n6 [
+ label = "x := a - b";
+ shape = rect;
+ xlabel="6";
+];
+
+end [
+ label = "End";
+ shape = ellipse; 
+];
+
+start -> n1;
+n1 -> n2[label = "yes"];
+n1 -> n4[label = "no"];
+n2 -> n3;
+n3 -> end;
+n4 -> n5 -> n6;
+n6 -> end;
+
+
+{
+rank=same;
+n2;n4;
+}
+
+{
+rank=same;
+n3;n6;
+}
+
+}

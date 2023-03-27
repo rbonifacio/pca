@@ -1,0 +1,46 @@
+\digraph[scale=0.40]{cfg01}{
+  node [fontname = "Handlee"];
+  edge [fontname = "Handlee"];
+
+  n1 [
+    label = "y := x";
+    shape = rect;
+    xlabel="1";
+  ];
+  n2 [
+    label = "z := 1";
+    shape = rect;
+    xlabel="2";
+  ];
+  n3 [
+    label = "while y > 1";
+    shape = diamond;
+    xlabel="3";
+  ];
+  n4 [
+    label = "z := z * y";
+    shape = rect;
+    xlabel="4";
+  ];
+  n5 [
+    label = "y := y - 1";
+    shape = rect;
+    xlabel="5";
+  ];
+  n6 [
+    label = "y := 0"; 
+    shape = rect;
+    xlabel="6";
+  ]; 
+  n1 -> n2;
+  n2 -> n3;
+  n3 -> n4[label = "yes"]
+  n4 -> n5; 
+  n5 -> n3; 
+  n3 -> n6 [label = "no"];
+  
+  {
+    rank=same;
+    n3;n4;
+  }
+}
